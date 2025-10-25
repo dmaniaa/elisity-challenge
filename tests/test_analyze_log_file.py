@@ -1,5 +1,5 @@
 import datetime
-from src.analyze_log_file import analyze_log_file, BruteForceEvent, SQLInjectionEvent, UnusualAccessEvent, PortScanEvent
+from src.analyze_log_file import analyze_log_file, BruteForceEvent, SQLInjectionEvent, UnusualAccessEvent, PortScanEvent, UnauthorizedRequestEvent
 
 def test_analyze_log_file():
     try:
@@ -16,16 +16,17 @@ def test_analyze_log_file():
 
     result = analyze_log_file("test_log.log")
     assert result is not None
-    assert len(result) == 4  
+    assert len(result) == 5  
     assert len(result[0]) == 1
     assert len(result[1]) == 1
-    assert len(result[2]) == 2
+    assert len(result[2]) == 1
     assert len(result[3]) == 1
+    assert len(result[4]) == 1
     assert isinstance(result[0][0], BruteForceEvent)
     assert isinstance(result[1][0], SQLInjectionEvent)
     assert isinstance(result[2][0], UnusualAccessEvent)
-    assert isinstance(result[2][1], UnusualAccessEvent)
     assert isinstance(result[3][0], PortScanEvent)
+    assert isinstance(result[4][0], UnauthorizedRequestEvent)
     assert result[0][0].timestamp == datetime.datetime(2025, 10, 25, 10, 50, 1)
     assert result[0][0].source == "10.0.0.1"
     assert result[0][0].username == "admin"
@@ -35,8 +36,6 @@ def test_analyze_log_file():
     assert result[2][0].timestamp == datetime.datetime(2025, 10, 25, 11, 5, 0)
     assert result[2][0].source == "10.5.10.5"
     assert result[2][0].path == "/etc/passwd"
-    assert result[2][0].code is None
-    assert result[2][0].method is None
     assert result[3][0].timestamp == datetime.datetime(2025, 10, 25, 11, 10, 0)
     assert result[3][0].source == "192.168.0.50"
     assert result[3][0].port == "22"
