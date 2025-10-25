@@ -2,3 +2,4 @@
 .venv
 uploaded_log.log
 .DS_Store
+.pytest_cache
