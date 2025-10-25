@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+    <title>Log results</title>
+  </head>
+  <body>
+    <h1>Attack attempts found:</h1>
+    <div class="container">
+        <div> 
+            <h2> Bruteforce attempts:</h2>
+            <table>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Source IP</th>
+                    <th>Username</th>
+                </tr>
+                {% for entry in entries[0] %}
+                <tr>
+                    <td>{{ entry.timestamp }}</td>
+                    <td>{{ entry.source }}</td>
+                    <td>{{ entry.username }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No bruteforce attempts found.</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div> 
+            <h2> SQL Injection attempts:</h2>
+            <table>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Source IP</th>
+                    <th>User input</th>
+                </tr>
+                {% for entry in entries[1] %}
+                <tr>
+                    <td>{{ entry.timestamp }}</td>
+                    <td>{{ entry.source }}</td>
+                    <td>{{ entry.user_input }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No SQL injection attempts found.</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div>
+            <h2> Unusual Access attempts:</h2>
+            <table>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Source IP</th>
+                    <th>Path</th>
+                    <th>Method</th>
+                    <th>Code returned</th>
+                </tr>
+                {% for entry in entries[2] %}
+                <tr>
+                    <td>{{ entry.timestamp }}</td>
+                    <td>{{ entry.source }}</td>
+                    <td>{{ entry.path }}</td>
+                    <td>{{ entry.method }}</td>
+                    <td>{{ entry.code }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">No unusual access attempts found.</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div>
+            <h2> Port Scan attempts:</h2>
+            <table>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Source IP</th>
+                    <th>Port scanned</th>
+                </tr>
+                {% for entry in entries[3] %}
+                <tr>
+                    <td>{{ entry.timestamp }}</td>
+                    <td>{{ entry.source }}</td>
+                    <td>{{ entry.port }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No port scan attempts found.</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+  </body>
+</html>

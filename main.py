@@ -1,5 +1,7 @@
 import datetime
 from enum import Enum
+import os
+from flask import Flask, render_template, request
 
 class EventCategory(Enum):
     BRUTEFORCE = "Bruteforce"
@@ -64,21 +66,24 @@ class PortScanEvent(LogEntry):
         return f"{self.timestamp}| Source IP: {self.source} | Triggered filter: {self.category.value} | Port: {self.port}"
 
 
-def analyze_log_file():
+def analyze_log_file(filename):
     log_entries = []
-
     #odczyt i parsowanie wpisów do klasy
-    with open("sample_security.log", "r") as file:
-        logfile_lines = file.readlines()
-        for line in logfile_lines:
-            line.strip()
-            timestamp = line.split()[0] + " " + line.split()[1]
-            level = line.split()[2]
-            source = line.split()[3]
-            event = line.split()[4]
-            message = " ".join(line.split()[5:])
-            log_entry = LogEntry(timestamp, level, source, event, message)
-            log_entries.append(log_entry)
+    try:
+        with open(filename, "r") as file:
+            logfile_lines = file.readlines()
+            for line in logfile_lines:
+                line.strip()
+                timestamp = line.split()[0] + " " + line.split()[1]
+                level = line.split()[2]
+                source = line.split()[3]
+                event = line.split()[4]
+                message = " ".join(line.split()[5:])
+                log_entry = LogEntry(timestamp, level, source, event, message)
+                log_entries.append(log_entry)
+        os.remove(filename)
+    except:
+        return []
 
     interesting_entries = []
 
@@ -117,7 +122,18 @@ def analyze_log_file():
 
     return [bruteforce_entries, sql_injection_entries, unusual_access_entries, port_scan_entries]
 
-for entry in analyze_log_file():
-    print("------")
-    for subentry in entry:
-        print(subentry)
+
+app = Flask(__name__)
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("upload.html")
+@app.route("/", methods=["POST"])
+def upload_file():
+    file = request.files["file"]
+    if file and file.filename.endswith(".log"):
+        file.save("uploaded_log.log")
+        # tutaj można dodać wywołanie funkcji analizującej plik
+        return render_template("result.html", entries=analyze_log_file("uploaded_log.log"))
+    return "No file uploaded."
+
+app.run(debug=True)
