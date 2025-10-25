@@ -1,0 +1,9 @@
+services:
+  log_analyzer:
+    build: .
+    ports:
+      - "5050:5050"
+    volumes:
+      - .:/app
+    environment:
+      - PORT=5050
