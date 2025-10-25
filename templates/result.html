@@ -66,20 +66,16 @@
                     <th>Timestamp</th>
                     <th>Source IP</th>
                     <th>Path</th>
-                    <th>Method</th>
-                    <th>Code returned</th>
                 </tr>
                 {% for entry in entries[2] %}
                 <tr>
                     <td>{{ entry.timestamp }}</td>
                     <td>{{ entry.source }}</td>
                     <td>{{ entry.path }}</td>
-                    <td>{{ entry.method }}</td>
-                    <td>{{ entry.code }}</td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="5">No unusual access attempts found.</td>
+                    <td colspan="3">No unusual access attempts found.</td>
                 </tr>
                 {% endfor %}
             </table>
