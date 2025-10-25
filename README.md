@@ -1,5 +1,6 @@
 # Challenge for Elisity recruitment process - Log Analysis Tool
 This tool analyzes a supplied log file to identify potential security events.
+App is deployed at https://elisity.danielmania.com/
 
 # Implemented event types
 ## Bruteforce attack
