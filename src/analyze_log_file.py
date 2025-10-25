@@ -27,14 +27,15 @@ class UnusualAccessEvent(LogEntry):
     def __init__(self, log_entry):
         self.timestamp = log_entry.timestamp
         self.source = log_entry.source
-        if log_entry.event == "UNUSUAL_ACCESS":
-            self.path = log_entry.message
-            self.code = None
-            self.method = None
-        if log_entry.event == "GET" or log_entry.event == "POST":
-            self.path = log_entry.message.split(" ")[0]
-            self.code = log_entry.message.split(" ")[1]
-            self.method = log_entry.event
+        self.path = log_entry.message
+
+class UnauthorizedRequestEvent(LogEntry):
+    def __init__(self, log_entry):
+        self.timestamp = log_entry.timestamp
+        self.source = log_entry.source
+        self.path = log_entry.message.split(" ")[0]
+        self.code = log_entry.message.split(" ")[1]
+        self.method = log_entry.event
 
 class PortScanEvent(LogEntry):
     def __init__(self, log_entry):
@@ -80,6 +81,7 @@ def analyze_log_file(filename):
     bruteforce_entries = []
     sql_injection_entries = []
     unusual_access_entries = []
+    unauthorized_request_entries = []
     port_scan_entries = []
 
     #sortowanie wpisów według rodzaju do odpowiednich klas
@@ -96,8 +98,8 @@ def analyze_log_file(filename):
         if entry.event == "PORT_SCAN_ATTEMPT":
             port_scan_entries.append(PortScanEvent(entry))
         if any(code in entry.message for code in interesting_codes):
-            unusual_access_entries.append(UnusualAccessEvent(entry))
+            unauthorized_request_entries.append(UnauthorizedRequestEvent(entry))
         else:
             continue
 
-    return [bruteforce_entries, sql_injection_entries, unusual_access_entries, port_scan_entries]
+    return [bruteforce_entries, sql_injection_entries, unusual_access_entries, port_scan_entries, unauthorized_request_entries] #zwrot listy z podlistami wpisów według kategorii

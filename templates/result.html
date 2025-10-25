@@ -60,7 +60,7 @@
             </table>
         </div>
         <div>
-            <h2> Unusual Access attempts:</h2>
+            <h2> Unusual access attempts:</h2>
             <table>
                 <tr>
                     <th>Timestamp</th>
@@ -85,7 +85,7 @@
             </table>
         </div>
         <div>
-            <h2> Port Scan attempts:</h2>
+            <h2> Port scan attempts:</h2>
             <table>
                 <tr>
                     <th>Timestamp</th>
@@ -101,6 +101,31 @@
                 {% else %}
                 <tr>
                     <td colspan="3">No port scan attempts found.</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div>
+            <h2> Unauthorized request attempts:</h2>
+            <table>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Source IP</th>
+                    <th>Path</th>
+                    <th>Method</th>
+                    <th>Code returned</th>
+                </tr>
+                {% for entry in entries[4] %}
+                <tr>
+                    <td>{{ entry.timestamp }}</td>
+                    <td>{{ entry.source }}</td>
+                    <td>{{ entry.path }}</td>
+                    <td>{{ entry.method }}</td>
+                    <td>{{ entry.code }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">No unauthorized request attempts found.</td>
                 </tr>
                 {% endfor %}
             </table>

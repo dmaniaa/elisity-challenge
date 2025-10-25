@@ -37,11 +37,11 @@ def test_analyze_log_file():
     assert result[2][0].path == "/etc/passwd"
     assert result[2][0].code is None
     assert result[2][0].method is None
-    assert result[2][1].timestamp == datetime.datetime(2025, 10, 25, 11, 5, 1)
-    assert result[2][1].source == "10.5.10.5"
-    assert result[2][1].path == "/admin"
-    assert result[2][1].code == "403"
-    assert result[2][1].method == "GET"
     assert result[3][0].timestamp == datetime.datetime(2025, 10, 25, 11, 10, 0)
     assert result[3][0].source == "192.168.0.50"
     assert result[3][0].port == "22"
+    assert result[4][0].timestamp == datetime.datetime(2025, 10, 25, 11, 5, 1)
+    assert result[4][0].source == "10.5.10.5"
+    assert result[4][0].path == "/admin"
+    assert result[4][0].code == "403"
+    assert result[4][0].method == "GET"
