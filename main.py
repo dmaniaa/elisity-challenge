@@ -2,9 +2,9 @@ import datetime
 from enum import Enum
 
 class EventCategory(Enum):
-    BRUTEFORCE = "Bruteforce attempt"
-    SQL_INJECTION = "SQL Injection attempt"
-    UNUSUAL_ACCESS = "Unusual Access attempt"
+    BRUTEFORCE = "Bruteforce"
+    SQL_INJECTION = "SQL Injection"
+    UNUSUAL_ACCESS = "Unusual Access"
     PORT_SCAN = "Port Scan"
 
 class LogEntry:
@@ -25,7 +25,7 @@ class BruteForceEvent(LogEntry):
         self.username = log_entry.message.split("user=")[1]
     def __str__(self):
         return f"{self.timestamp} | Source IP: {self.source} | Triggered filter: {self.category.value} | Username: {self.username}"
-    
+
 class SQLInjectionEvent(LogEntry):
     def __init__(self, log_entry):
         self.timestamp = log_entry.timestamp
@@ -103,10 +103,9 @@ def analyze_log_file():
     for entry in interesting_entries:
         if entry.event == "FAILED_LOGIN":
             failed_logins.append(entry)
-            if len(failed_logins) >= 2 and (failed_logins[-1].timestamp - failed_logins[-2].timestamp).seconds <= 3:
+            if len(failed_logins) >= 2 and (failed_logins[-1].timestamp - failed_logins[-2].timestamp).seconds <= 3 and failed_logins[-1].source == failed_logins[-2].source:
                 bruteforce_entries.append(BruteForceEvent(entry))
-        else:
-            failed_logins.clear()
+                failed_logins.clear()
         if entry.event == "SQL_INJECTION_ATTEMPT":
             sql_injection_entries.append(SQLInjectionEvent(entry))
         if entry.event == "UNUSUAL_ACCESS":
