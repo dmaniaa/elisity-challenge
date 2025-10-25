@@ -1,5 +1,5 @@
 import datetime
-from src.analyze_log_file import analyze_log_file, LogEntry, BruteForceEvent, SQLInjectionEvent, UnusualAccessEvent, PortScanEvent
+from src.analyze_log_file import analyze_log_file, BruteForceEvent, SQLInjectionEvent, UnusualAccessEvent, PortScanEvent
 
 def test_analyze_log_file():
     try:

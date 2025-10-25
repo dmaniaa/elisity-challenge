@@ -1,12 +1,5 @@
 import datetime
 import os
-from enum import Enum
-
-class EventCategory(Enum):
-    BRUTEFORCE = "Bruteforce"
-    SQL_INJECTION = "SQL Injection"
-    UNUSUAL_ACCESS = "Unusual Access"
-    PORT_SCAN = "Port Scan"
 
 #bazowa klasa wpisu logu - przed analizą i określeniem kategorii
 class LogEntry:
