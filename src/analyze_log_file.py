@@ -9,13 +9,11 @@ class LogEntry:
         self.source = source
         self.event = event
         self.message = message
-        self.category = None
     
  #klasy pochodne dla konkretnych kategorii zdarzeń   
 class BruteForceEvent(LogEntry):
     def __init__(self, log_entry):
         self.timestamp = log_entry.timestamp
-        self.level = log_entry.level
         self.source = log_entry.source
         self.username = log_entry.message.split("user=")[1]
 
